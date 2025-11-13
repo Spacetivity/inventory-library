@@ -2,7 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    kotlin("plugin.serialization") version "2.2.21"
+    id("com.gradleup.shadow") version "9.2.2"
 }
 
 dependencies {
@@ -15,19 +16,20 @@ tasks.shadowJar {
     }
 }
 
+tasks.shadowJar {
+    manifest {
+        attributes["paperweight-mappings-namespace"] = "mojang"
+    }
+    archiveFileName.set("inventory-library.jar")
+    mergeServiceFiles()
+    archiveClassifier.set("")
+}
+
 kotlin {
     jvmToolchain(libs.versions.java.get().toInt())
 }
 
-task("sourcesJar", type = Jar::class) {
+tasks.register<Jar>("sourcesJar") {
     from(sourceSets.main.get().allSource)
     archiveClassifier.set("sources")
-}
-
-tasks {
-    named<ShadowJar>("shadowJar") {
-        archiveFileName.set("${project.name}-${project.version}.jar")
-        mergeServiceFiles()
-        exclude("kotlin/**")
-    }
 }

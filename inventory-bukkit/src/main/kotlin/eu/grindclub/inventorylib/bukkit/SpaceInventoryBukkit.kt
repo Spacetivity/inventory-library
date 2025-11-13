@@ -1,0 +1,49 @@
+package eu.grindclub.inventorylib.bukkit
+
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import eu.grindclub.inventorylib.api.SpaceInventoryProvider
+import eu.grindclub.inventorylib.bukkit.api.InventoryApiImpl
+import eu.grindclub.inventorylib.bukkit.file.MessageFile
+import eu.grindclub.inventorylib.bukkit.file.SoundConfigFile
+import eu.grindclub.inventorylib.bukkit.listener.InventoryPlayerListener
+import eu.grindclub.inventorylib.bukkit.utils.FileUtils
+import org.bukkit.plugin.java.JavaPlugin
+
+class SpaceInventoryBukkit : JavaPlugin() {
+
+    lateinit var soundConfigFile: SoundConfigFile
+    lateinit var messageFile: MessageFile
+
+    override fun onEnable() {
+        instance = this
+
+        this.soundConfigFile = createOrLoadSoundConfigFile()
+        this.messageFile = createOrLoadMessageFile()
+
+        val inventoryApi = InventoryApiImpl()
+        SpaceInventoryProvider.register(inventoryApi)
+
+        InventoryPlayerListener(this)
+    }
+
+    private fun createOrLoadSoundConfigFile(): SoundConfigFile {
+        return FileUtils.createOrLoadFile(dataFolder.toPath(), "global", "sounds", SoundConfigFile::class, SoundConfigFile())
+    }
+
+    private fun createOrLoadMessageFile(): MessageFile {
+        return FileUtils.createOrLoadFile(dataFolder.toPath(), "global", "messages", MessageFile::class, MessageFile())
+    }
+
+    companion object {
+        val GSON: Gson = GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .create()
+
+        @JvmStatic
+        lateinit var instance: SpaceInventoryBukkit
+            private set
+    }
+
+}

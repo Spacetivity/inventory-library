@@ -19,16 +19,16 @@ task("sourcesJar", type = Jar::class) {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Spacetivity/SpaceInventories")
+            name = "GitLabPackages"
+            url = uri("https://gitlab.com/api/v4/projects/${project.findProperty("gitlab.projectId") ?: System.getenv("CI_PROJECT_ID") ?: "YOUR_PROJECT_ID"}/packages/maven")
             credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                username = project.findProperty("gitlab.user") as String? ?: System.getenv("CI_JOB_USER") ?: "__token__"
+                password = project.findProperty("gitlab.token") as String? ?: System.getenv("CI_JOB_TOKEN") ?: System.getenv("GITLAB_TOKEN")
             }
         }
     }
     publications {
-        register<MavenPublication>("gpr") {
+        register<MavenPublication>("maven") {
             from(components["java"])
         }
     }

@@ -1,6 +1,6 @@
 name: SpaceInventories
 version: '1.0-SNAPSHOT'
-main: net.spacetivity.inventory.bukkit.SpaceInventoryBukkit
+main: net.spacetivity.inventorylib.bukkit.SpaceInventoryBukkit
 api-version: "1.21.4"
 authors:
   - TGamings

@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.24"
+    kotlin("jvm") version "2.2.21"
 }
 
 allprojects {
-    group = "net.spacetivity.inventory"
+    group = "eu.grindclub.inventorylib"
     version = "1.0-SNAPSHOT"
 
     repositories {
@@ -21,8 +21,8 @@ allprojects {
 
     afterEvaluate {
         dependencies {
-            compileOnly(libs.gson)
-            compileOnly(libs.api.paper)
+            compileOnly(libs.kotlinx.serialization.json)
+            compileOnly(libs.paper.api)
         }
     }
 }
@@ -35,8 +35,4 @@ tasks.jar {
 
 kotlin {
     jvmToolchain(libs.versions.java.get().toInt())
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = libs.versions.java.get()
 }
