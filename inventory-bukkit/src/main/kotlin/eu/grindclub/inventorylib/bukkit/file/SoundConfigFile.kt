@@ -7,4 +7,4 @@ data class SoundConfigFile(
     val onOpen: Sound? = null,
     val onClose: Sound? = null,
     val onPageSwitch: Sound? = null,
-) : SpaceFile
+) : GuiFile

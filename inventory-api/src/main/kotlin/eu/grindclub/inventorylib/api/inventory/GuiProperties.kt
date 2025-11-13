@@ -2,7 +2,7 @@ package eu.grindclub.inventorylib.api.inventory
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class InventoryProperties(
+annotation class GuiProperties(
     val id: String,
     val rows: Int = 1,
     val columns: Int = 9,
@@ -13,3 +13,4 @@ annotation class InventoryProperties(
     val playSoundOnClose: Boolean = true,
     val playSoundOnPageSwitch: Boolean = true
 )
+

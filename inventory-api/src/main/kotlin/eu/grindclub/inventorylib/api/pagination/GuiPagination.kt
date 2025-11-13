@@ -1,17 +1,18 @@
 package eu.grindclub.inventorylib.api.pagination
 
 import com.google.common.collect.Multimap
-import eu.grindclub.inventorylib.api.item.InteractiveItem
+import eu.grindclub.inventorylib.api.item.GuiItem
 
-interface InventoryPagination {
+interface GuiPagination {
 
     val positions: List<Any>
-    val items: Multimap<Int, InteractiveItem>
+    val items: Multimap<Int, GuiItem>
 
-    fun getPaginationItems(): List<InteractiveItem> = this.items.entries().mapNotNull { it.value }
+    fun getPaginationItems(): List<GuiItem> = this.items.entries().mapNotNull { it.value }
 
     fun getLastPageId(): Int
     fun getPageAmount(): Int
+    fun getCurrentPageId(): Int
 
     fun isFirstPage(): Boolean
     fun isLastPage(): Boolean
@@ -25,8 +26,9 @@ interface InventoryPagination {
     fun toPreviousPage()
 
     fun setItemField(startRow: Int, startColumn: Int, endRow: Int, endColumn: Int)
-    fun distributeItems(items: List<InteractiveItem>)
+    fun distributeItems(items: List<GuiItem>)
     fun limitItemsPerPage(amount: Int)
     fun refreshPage()
 
 }
+

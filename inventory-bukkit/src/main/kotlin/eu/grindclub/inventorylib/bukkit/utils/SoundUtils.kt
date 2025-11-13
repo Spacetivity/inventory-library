@@ -1,15 +1,15 @@
 package eu.grindclub.inventorylib.bukkit.utils
 
-import eu.grindclub.inventorylib.bukkit.SpaceInventoryBukkit
+import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 
 object SoundUtils {
 
-    val CLICK: Sound? = SpaceInventoryBukkit.instance.soundConfigFile.onClick ?: Sound.BLOCK_NOTE_BLOCK_HAT
-    val OPEN: Sound? = SpaceInventoryBukkit.instance.soundConfigFile.onOpen ?: Sound.BLOCK_COPPER_DOOR_OPEN
-    val CLOSE: Sound? = SpaceInventoryBukkit.instance.soundConfigFile.onClose ?: Sound.BLOCK_COPPER_DOOR_CLOSE
-    val PAGE_SWITCH: Sound? = SpaceInventoryBukkit.instance.soundConfigFile.onPageSwitch ?: Sound.BLOCK_COPPER_BULB_TURN_ON
+    val CLICK: Sound? = GuiInventoryBukkit.instance.soundConfigFile.onClick ?: Sound.BLOCK_NOTE_BLOCK_HAT
+    val OPEN: Sound? = GuiInventoryBukkit.instance.soundConfigFile.onOpen ?: Sound.BLOCK_COPPER_DOOR_OPEN
+    val CLOSE: Sound? = GuiInventoryBukkit.instance.soundConfigFile.onClose ?: Sound.BLOCK_COPPER_DOOR_CLOSE
+    val PAGE_SWITCH: Sound? = GuiInventoryBukkit.instance.soundConfigFile.onPageSwitch ?: Sound.BLOCK_COPPER_BULB_TURN_ON
 
     fun playClickSound(player: Player) {
         playSound(player, CLICK)

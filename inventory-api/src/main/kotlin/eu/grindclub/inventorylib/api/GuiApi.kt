@@ -1,13 +1,13 @@
 package eu.grindclub.inventorylib.api
 
 import net.kyori.adventure.text.Component
-import eu.grindclub.inventorylib.api.inventory.InventoryHandler
+import eu.grindclub.inventorylib.api.inventory.GuiHandler
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-interface InventoryApi {
+interface GuiApi {
 
-    val inventoryHandler: InventoryHandler
+    val inventoryHandler: GuiHandler
 
     fun openConfirmationInventory(
         holder: Player,
@@ -18,3 +18,4 @@ interface InventoryApi {
     )
 
 }
+

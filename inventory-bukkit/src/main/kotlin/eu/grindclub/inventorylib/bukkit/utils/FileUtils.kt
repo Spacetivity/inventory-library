@@ -1,7 +1,7 @@
 package eu.grindclub.inventorylib.bukkit.utils
 
-import eu.grindclub.inventorylib.bukkit.SpaceInventoryBukkit
-import eu.grindclub.inventorylib.bukkit.file.SpaceFile
+import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
+import eu.grindclub.inventorylib.bukkit.file.GuiFile
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -12,7 +12,7 @@ object FileUtils {
 
     fun <T> read(file: File, clazz: Class<T>): T? {
         return try {
-            SpaceInventoryBukkit.GSON.fromJson(FileReader(file), clazz)
+            GuiInventoryBukkit.GSON.fromJson(FileReader(file), clazz)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
             null
@@ -22,14 +22,14 @@ object FileUtils {
     fun save(file: File, result: Any) {
         try {
             val fileWriter = FileWriter(file)
-            SpaceInventoryBukkit.GSON.toJson(result, fileWriter)
+            GuiInventoryBukkit.GSON.toJson(result, fileWriter)
             fileWriter.close()
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
 
-    fun <T : SpaceFile> createOrLoadFile(dataFolderPath: Path, subFolderName: String, fileName: String, clazz: KClass<T>, content: T): T {
+    fun <T : GuiFile> createOrLoadFile(dataFolderPath: Path, subFolderName: String, fileName: String, clazz: KClass<T>, content: T): T {
         val filePath = File("${dataFolderPath}/$subFolderName")
         val result: T
 

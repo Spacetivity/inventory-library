@@ -3,11 +3,11 @@ package eu.grindclub.inventorylib.api.inventory
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 
-interface SpaceInventory {
+interface GuiInventory {
 
-    val provider: InventoryProvider
+    val provider: GuiProvider
 
-    val controller: InventoryController
+    val controller: GuiController
 
     val name: String
 
@@ -31,3 +31,4 @@ interface SpaceInventory {
     fun close(holder: Player, forceSyncClosing: Boolean)
 
 }
+

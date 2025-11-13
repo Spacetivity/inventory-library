@@ -1,18 +1,18 @@
 package eu.grindclub.inventorylib.api.utils
 
-import eu.grindclub.inventorylib.api.item.InventoryPos
+import eu.grindclub.inventorylib.api.item.GuiPos
 
 object MathUtils {
 
-    fun slotToPosition(slot: Int, columns: Int): InventoryPos {
-        return InventoryPos.of(slot / columns, slot % columns)
+    fun slotToPosition(slot: Int, columns: Int): GuiPos {
+        return GuiPos.of(slot / columns, slot % columns)
     }
 
-    fun positionToSlot(pos: InventoryPos, columns: Int): Int {
+    fun positionToSlot(pos: GuiPos, columns: Int): Int {
         return pos.row * columns + pos.column
     }
 
-    fun nextPositionFromSlot(slot: Int, columns: Int): InventoryPos {
+    fun nextPositionFromSlot(slot: Int, columns: Int): GuiPos {
         return slotToPosition(slot + 1, columns)
     }
 

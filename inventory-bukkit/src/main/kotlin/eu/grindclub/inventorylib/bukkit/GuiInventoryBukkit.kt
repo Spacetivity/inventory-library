@@ -2,15 +2,15 @@ package eu.grindclub.inventorylib.bukkit
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import eu.grindclub.inventorylib.api.SpaceInventoryProvider
-import eu.grindclub.inventorylib.bukkit.api.InventoryApiImpl
+import eu.grindclub.inventorylib.api.GuiInventoryProvider
+import eu.grindclub.inventorylib.bukkit.api.GuiApiImpl
 import eu.grindclub.inventorylib.bukkit.file.MessageFile
 import eu.grindclub.inventorylib.bukkit.file.SoundConfigFile
-import eu.grindclub.inventorylib.bukkit.listener.InventoryPlayerListener
+import eu.grindclub.inventorylib.bukkit.listener.GuiPlayerListener
 import eu.grindclub.inventorylib.bukkit.utils.FileUtils
 import org.bukkit.plugin.java.JavaPlugin
 
-class SpaceInventoryBukkit : JavaPlugin() {
+class GuiInventoryBukkit : JavaPlugin() {
 
     lateinit var soundConfigFile: SoundConfigFile
     lateinit var messageFile: MessageFile
@@ -21,10 +21,10 @@ class SpaceInventoryBukkit : JavaPlugin() {
         this.soundConfigFile = createOrLoadSoundConfigFile()
         this.messageFile = createOrLoadMessageFile()
 
-        val inventoryApi = InventoryApiImpl()
-        SpaceInventoryProvider.register(inventoryApi)
+        val inventoryApi = GuiApiImpl()
+        GuiInventoryProvider.register(inventoryApi)
 
-        InventoryPlayerListener(this)
+        GuiPlayerListener(this)
     }
 
     private fun createOrLoadSoundConfigFile(): SoundConfigFile {
@@ -42,8 +42,9 @@ class SpaceInventoryBukkit : JavaPlugin() {
             .create()
 
         @JvmStatic
-        lateinit var instance: SpaceInventoryBukkit
+        lateinit var instance: GuiInventoryBukkit
             private set
     }
 
 }
+

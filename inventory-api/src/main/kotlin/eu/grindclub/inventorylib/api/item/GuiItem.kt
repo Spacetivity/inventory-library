@@ -2,8 +2,8 @@ package eu.grindclub.inventorylib.api.item
 
 import net.kyori.adventure.text.Component
 import eu.grindclub.inventorylib.api.extension.getInventory
-import eu.grindclub.inventorylib.api.inventory.InventoryController
-import eu.grindclub.inventorylib.api.pagination.InventoryPagination
+import eu.grindclub.inventorylib.api.inventory.GuiController
+import eu.grindclub.inventorylib.api.pagination.GuiPagination
 import eu.grindclub.inventorylib.api.utils.MathUtils
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -18,32 +18,32 @@ import org.bukkit.persistence.PersistentDataType
 import java.time.Instant
 import java.util.*
 
-class InteractiveItem(
+class GuiItem(
     var item: ItemStack,
-    private val action: ((InventoryPos, InteractiveItem, InventoryClickEvent) -> Unit)?
+    private val action: ((GuiPos, GuiItem, InventoryClickEvent) -> Unit)?
 ) {
 
     private val itemId = UUID.randomUUID().toString().split("-")[0]
     private var lastClickTime: Instant = Instant.EPOCH
-    private var cooldownMillis: Long = 150
+    private var cooldownMillis: Long = 250
 
-    fun runAction(position: InventoryPos, interactiveItem: InteractiveItem, event: InventoryClickEvent) {
+    fun runAction(position: GuiPos, guiItem: GuiItem, event: InventoryClickEvent) {
         val now = Instant.now()
 
-        if (now.toEpochMilli() - Instant.EPOCH.toEpochMilli() < cooldownMillis) {
+        if (lastClickTime != Instant.EPOCH && (now.toEpochMilli() - lastClickTime.toEpochMilli()) < cooldownMillis) {
             event.isCancelled = true
             return
         }
 
         lastClickTime = now
-        action?.invoke(position, interactiveItem, event)
+        action?.invoke(position, guiItem, event)
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun update(controller: InventoryController, modification: Modification, vararg values: Any) {
+    fun update(controller: GuiController, modification: Modification, vararg values: Any) {
         if (values.size > 1) throw UnsupportedOperationException("There are no more than one value allowed! Current size: " + values.size)
 
-        val inventoryPosition: InventoryPos? = controller.getPositionOfItem(this)
+        val inventoryPosition: GuiPos? = controller.getPositionOfItem(this)
         var modifiableItem: ItemStack
         var extraItem: ItemStack? = null // is a reference for the extra stored item in the pagination items if existing
 
@@ -132,21 +132,21 @@ class InteractiveItem(
 
     companion object {
 
-        fun placeholder(type: Material): InteractiveItem {
+        fun placeholder(type: Material): GuiItem {
             val itemId = UUID.randomUUID().toString().split("-")[0]
-            return InteractiveItem(makeItemStack(type, itemId)) { _, _, _ -> }
+            return GuiItem(makeItemStack(type, itemId)) { _, _, _ -> }
         }
 
-        fun nextPage(item: ItemStack, pagination: InventoryPagination): InteractiveItem {
-            return of(item) { _: InventoryPos, _: InteractiveItem, _: InventoryClickEvent? -> pagination.toNextPage() }
+        fun nextPage(item: ItemStack, pagination: GuiPagination): GuiItem {
+            return of(item) { _: GuiPos, _: GuiItem, _: InventoryClickEvent? -> pagination.toNextPage() }
         }
 
-        fun previousPage(item: ItemStack, pagination: InventoryPagination): InteractiveItem {
-            return of(item) { _: InventoryPos, _: InteractiveItem, _: InventoryClickEvent -> pagination.toPreviousPage() }
+        fun previousPage(item: ItemStack, pagination: GuiPagination): GuiItem {
+            return of(item) { _: GuiPos, _: GuiItem, _: InventoryClickEvent -> pagination.toPreviousPage() }
         }
 
-        fun navigator(item: ItemStack, inventoryKey: String): InteractiveItem {
-            return of(item) { _: InventoryPos, _: InteractiveItem, event: InventoryClickEvent ->
+        fun navigator(item: ItemStack, inventoryKey: String): GuiItem {
+            return of(item) { _: GuiPos, _: GuiItem, event: InventoryClickEvent ->
                 val holder: Player = event.whoClicked as Player
                 val inventory = getInventory(holder, inventoryKey) ?: return@of
 
@@ -155,12 +155,12 @@ class InteractiveItem(
             }
         }
 
-        fun of(item: ItemStack): InteractiveItem {
-            return InteractiveItem(item) { _: InventoryPos, _: InteractiveItem, _: InventoryClickEvent -> }
+        fun of(item: ItemStack): GuiItem {
+            return GuiItem(item) { _: GuiPos, _: GuiItem, _: InventoryClickEvent -> }
         }
 
-        fun of(item: ItemStack, action: ((InventoryPos, InteractiveItem, InventoryClickEvent) -> Unit)): InteractiveItem {
-            return InteractiveItem(item, action)
+        fun of(item: ItemStack, action: ((GuiPos, GuiItem, InventoryClickEvent) -> Unit)): GuiItem {
+            return GuiItem(item, action)
         }
 
         private fun makeItemStack(type: Material, itemId: String): ItemStack {
@@ -180,3 +180,4 @@ class InteractiveItem(
         }
     }
 }
+

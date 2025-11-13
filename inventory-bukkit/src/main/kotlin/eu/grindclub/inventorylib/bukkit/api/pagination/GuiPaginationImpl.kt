@@ -2,18 +2,18 @@ package eu.grindclub.inventorylib.bukkit.api.pagination
 
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.Multimap
-import eu.grindclub.inventorylib.api.inventory.InventoryController
-import eu.grindclub.inventorylib.api.item.InteractiveItem
-import eu.grindclub.inventorylib.api.item.InventoryPos
-import eu.grindclub.inventorylib.api.pagination.InventoryPagination
+import eu.grindclub.inventorylib.api.inventory.GuiController
+import eu.grindclub.inventorylib.api.item.GuiItem
+import eu.grindclub.inventorylib.api.item.GuiPos
+import eu.grindclub.inventorylib.api.pagination.GuiPagination
 import eu.grindclub.inventorylib.bukkit.utils.SoundUtils
 import org.bukkit.entity.Player
 
 
-class InventoryPaginationImpl(private val controller: InventoryController) : InventoryPagination {
+class GuiPaginationImpl(private val controller: GuiController) : GuiPagination {
 
-    override val positions: MutableList<InventoryPos> = mutableListOf()
-    override val items: Multimap<Int, InteractiveItem> = ArrayListMultimap.create()
+    override val positions: MutableList<GuiPos> = mutableListOf()
+    override val items: Multimap<Int, GuiItem> = ArrayListMultimap.create()
 
     private var currentPageId: Int = 0
     private var itemsPerPage: Int = 9
@@ -25,6 +25,10 @@ class InventoryPaginationImpl(private val controller: InventoryController) : Inv
 
     override fun getPageAmount(): Int {
         return items.keySet().stream().toList().size
+    }
+
+    override fun getCurrentPageId(): Int {
+        return this.currentPageId
     }
 
     override fun isFirstPage(): Boolean {
@@ -50,6 +54,7 @@ class InventoryPaginationImpl(private val controller: InventoryController) : Inv
     override fun toLastPage() {
         val pageIds = items.keySet().stream().toList()
         this.currentPageId = pageIds[pageIds.size - 1]
+        refreshPage()
     }
 
     override fun toNextPage() {
@@ -70,14 +75,14 @@ class InventoryPaginationImpl(private val controller: InventoryController) : Inv
 
         for (row in startRow until numRows.coerceAtMost(endRow + 1)) {
             for (column in startColumn until numColumns.coerceAtMost(endColumn + 1)) {
-                val position = InventoryPos.of(row, column)
+                val position = GuiPos.of(row, column)
                 positions.add(position)
             }
         }
     }
 
 
-    override fun distributeItems(items: List<InteractiveItem>) {
+    override fun distributeItems(items: List<GuiItem>) {
         this.items.clear()
         var pageIndex = 0
 
@@ -100,7 +105,7 @@ class InventoryPaginationImpl(private val controller: InventoryController) : Inv
             controller.clearPosition(currentPosition)
         }
 
-        val itemsForNextPage: List<InteractiveItem> = items[currentPageId].stream().toList()
+        val itemsForNextPage: List<GuiItem> = items[currentPageId].stream().toList()
         var itemIndex = 0
 
         for (currentPosition in this.positions) {
@@ -118,3 +123,4 @@ class InventoryPaginationImpl(private val controller: InventoryController) : Inv
         }
     }
 }
+
