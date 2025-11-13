@@ -1,8 +1,8 @@
-name: SpaceInventories
+name: inventory-library
 version: '1.0-SNAPSHOT'
-main: net.spacetivity.inventorylib.bukkit.SpaceInventoryBukkit
-api-version: "1.21.4"
+main: eu.grindclub.inventorylib.bukkit.SpaceInventoryBukkit
+api-version: "1.21.8"
 authors:
   - TGamings
 depend:
-  - SpaceDependencies
+  - dependencies
