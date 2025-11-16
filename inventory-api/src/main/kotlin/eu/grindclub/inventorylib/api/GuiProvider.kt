@@ -1,6 +1,6 @@
 package eu.grindclub.inventorylib.api
 
-class GuiInventoryProvider {
+class GuiProvider {
 
     companion object {
         fun register(api: GuiApi) {
@@ -13,4 +13,5 @@ class GuiInventoryProvider {
     }
 
 }
+
 

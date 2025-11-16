@@ -4,8 +4,9 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import eu.grindclub.inventorylib.api.inventory.GuiController
 import eu.grindclub.inventorylib.api.inventory.GuiProperties
-import eu.grindclub.inventorylib.api.inventory.GuiProvider
+import eu.grindclub.inventorylib.api.inventory.Gui as InventoryGui
 import eu.grindclub.inventorylib.api.item.GuiItem
+import eu.grindclub.inventorylib.api.GuiProvider
 import eu.grindclub.inventorylib.api.item.GuiPos
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -17,7 +18,7 @@ class ConfirmationGui(
     private val displayItem: ItemStack,
     private val onAccept: ((ItemStack) -> Unit),
     private val onDeny: ((ItemStack) -> Unit)
-) : GuiProvider {
+) : InventoryGui {
 
     override fun init(player: Player, controller: GuiController) {
         val acceptItem = ItemStack(Material.LIME_STAINED_GLASS_PANE)
@@ -32,19 +33,19 @@ class ConfirmationGui(
 
         controller.fill(
             GuiController.FillType.RECTANGLE,
-            GuiItem.of(acceptItem) { _, _, _ -> onAccept.invoke(acceptItem) },
+            GuiProvider.api.of(acceptItem) { _, _, _ -> onAccept.invoke(acceptItem) },
             GuiPos.of(0, 0),
             GuiPos.of(2, 2)
         )
 
         controller.fill(
             GuiController.FillType.RECTANGLE,
-            GuiItem.of(denyItem) { _, _, _ -> onDeny.invoke(denyItem) },
+            GuiProvider.api.of(denyItem) { _, _, _ -> onDeny.invoke(denyItem) },
             GuiPos.of(0, 6),
             GuiPos.of(2, 8)
         )
 
-        controller.setItem(1, 4, GuiItem.of(this.displayItem))
+        controller.setItem(1, 4, GuiProvider.api.of(this.displayItem))
     }
 }
 

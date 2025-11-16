@@ -2,8 +2,8 @@ package eu.grindclub.inventorylib.bukkit.api.inventory
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
-import eu.grindclub.inventorylib.api.inventory.GuiProvider
-import eu.grindclub.inventorylib.api.inventory.GuiInventory
+import eu.grindclub.inventorylib.api.inventory.Gui
+import eu.grindclub.inventorylib.api.inventory.GuiView
 import eu.grindclub.inventorylib.api.pagination.GuiPagination
 import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
 import eu.grindclub.inventorylib.bukkit.utils.SoundUtils
@@ -13,11 +13,11 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.metadata.FixedMetadataValue
 
 class GuiInventoryImpl(
-    override val provider: GuiProvider,
+    override val provider: Gui,
     override val title: Component,
     override val controller: eu.grindclub.inventorylib.api.inventory.GuiController,
     override val isStaticInventory: Boolean,
-) : GuiInventory {
+) : GuiView {
 
     private val pagination: GuiPagination? = this.controller.pagination
     override val name: String = this.controller.getInventoryId()

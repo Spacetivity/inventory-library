@@ -3,7 +3,8 @@ package eu.grindclub.inventorylib.bukkit.listener
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import eu.grindclub.inventorylib.api.inventory.GuiHandler
-import eu.grindclub.inventorylib.api.inventory.GuiInventory
+import eu.grindclub.inventorylib.api.GuiProvider
+import eu.grindclub.inventorylib.api.inventory.GuiView
 import eu.grindclub.inventorylib.api.item.GuiItem
 import eu.grindclub.inventorylib.api.utils.MathUtils
 import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
@@ -22,7 +23,7 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
 
     init {
         plugin.server.pluginManager.registerEvents(this, this.plugin)
-        this.inventoryHandler = eu.grindclub.inventorylib.api.GuiInventoryProvider.api.inventoryHandler
+        this.inventoryHandler = GuiProvider.api.inventoryHandler
     }
 
     @EventHandler
@@ -33,7 +34,7 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
         if (event.clickedInventory !== player.openInventory.topInventory) return
         if (!validateInventory(player, event.view.title())) return
 
-        val inventory: GuiInventory = inventoryHandler.getInventory(player, getOpenInventoryName(player)) ?: return
+        val inventory: GuiView = inventoryHandler.getView(player, getOpenInventoryName(player)) ?: return
         val position: eu.grindclub.inventorylib.api.item.GuiPos = MathUtils.slotToPosition(event.slot, inventory.columns)
 
         event.isCancelled = true
@@ -53,27 +54,27 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
         if (!player.hasMetadata("open-inventory")) return
         if (!validateInventory(player, event.view.title())) return
 
-        val inventory = inventoryHandler.getInventory(player, getOpenInventoryName(player)) ?: return
+        val inventory = inventoryHandler.getView(player, getOpenInventoryName(player)) ?: return
 
         if (!inventory.isCloseable) {
             Bukkit.getScheduler().runTask(this.plugin, Runnable { inventory.open(player) })
         } else {
             player.removeMetadata("open-inventory", this.plugin)
             if (inventory.controller.properties.playSoundOnClose) SoundUtils.playCloseSound(player)
-            if (inventory.isStaticInventory) inventoryHandler.removeCachedInventory(player, inventory)
+            if (inventory.isStaticInventory) inventoryHandler.removeCachedView(player, inventory)
         }
     }
 
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
-        inventoryHandler.clearCachedInventories(event.player)
+        inventoryHandler.clearCachedViews(event.player)
     }
 
     private fun validateInventory(player: Player, title: Component): Boolean {
         val openInventoryTitle: String = PlainTextComponentSerializer.plainText().serialize(title)
 
         val inventoryName: String = getOpenInventoryName(player)
-        val inventory: GuiInventory = inventoryHandler.getInventory(player, inventoryName) ?: return false
+        val inventory: GuiView = inventoryHandler.getView(player, inventoryName) ?: return false
         val possibleInventoryTitle: String = PlainTextComponentSerializer.plainText().serialize(inventory.title)
 
         return possibleInventoryTitle.equals(openInventoryTitle, true)

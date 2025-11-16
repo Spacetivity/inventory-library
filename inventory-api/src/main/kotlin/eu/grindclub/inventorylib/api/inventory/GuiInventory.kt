@@ -3,9 +3,9 @@ package eu.grindclub.inventorylib.api.inventory
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 
-interface GuiInventory {
+interface GuiView {
 
-    val provider: GuiProvider
+    val provider: Gui
 
     val controller: GuiController
 

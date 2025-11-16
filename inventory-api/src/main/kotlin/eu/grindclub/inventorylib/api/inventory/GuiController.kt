@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory
 
 interface GuiController {
 
-    val provider: GuiProvider
+    val provider: Gui
     val properties: GuiProperties
 
     val inventorySlotCount: Int

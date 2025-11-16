@@ -3,17 +3,18 @@ package eu.grindclub.inventorylib.bukkit.api.inventory
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import eu.grindclub.inventorylib.api.inventory.GuiController
 import eu.grindclub.inventorylib.api.inventory.GuiProperties
-import eu.grindclub.inventorylib.api.inventory.GuiProvider
+import eu.grindclub.inventorylib.api.inventory.Gui
 import eu.grindclub.inventorylib.api.item.GuiItem
 import eu.grindclub.inventorylib.api.item.GuiPos
 import eu.grindclub.inventorylib.api.pagination.GuiPagination
 import eu.grindclub.inventorylib.api.utils.MathUtils
 import eu.grindclub.inventorylib.bukkit.api.pagination.GuiPaginationImpl
+import eu.grindclub.inventorylib.api.GuiProvider
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import java.util.concurrent.ThreadLocalRandom
 
-class GuiControllerImpl(override val provider: GuiProvider) : GuiController {
+class GuiControllerImpl(override val provider: Gui) : GuiController {
 
     override val properties: GuiProperties = provider.javaClass.getAnnotation(GuiProperties::class.java)
 
@@ -41,11 +42,11 @@ class GuiControllerImpl(override val provider: GuiProvider) : GuiController {
     }
 
     override fun placeholder(pos: GuiPos, type: Material) {
-        setItem(pos, GuiItem.placeholder(type))
+        setItem(pos, GuiProvider.api.placeholder(type))
     }
 
     override fun placeholder(row: Int, column: Int, type: Material) {
-        setItem(row, column, GuiItem.placeholder(type))
+        setItem(row, column, GuiProvider.api.placeholder(type))
     }
 
     override fun setItem(pos: GuiPos, item: GuiItem) {

@@ -6,26 +6,26 @@ import org.bukkit.entity.Player
 
 interface GuiHandler {
 
-    val inventories: Multimap<Player, GuiInventory>
+    val inventories: Multimap<Player, GuiView>
 
-    fun openStaticInventory(holder: Player, title: Component, provider: GuiProvider, forceSyncOpening: Boolean)
+    fun openStaticView(holder: Player, title: Component, provider: Gui, forceSyncOpening: Boolean)
 
-    fun cacheInventory(holder: Player, title: Component, provider: GuiProvider)
+    fun cacheView(holder: Player, title: Component, provider: Gui)
 
-    fun cacheInventory(
+    fun cacheView(
         holder: Player,
         title: Component,
-        provider: GuiProvider,
+        provider: Gui,
         staticInventory: Boolean
-    ): GuiInventory?
+    ): GuiView?
 
-    fun updateCachedInventory(holder: Player, inventoryId: String)
+    fun updateCachedView(holder: Player, viewId: String)
 
-    fun clearCachedInventories(holder: Player)
+    fun clearCachedViews(holder: Player)
 
-    fun removeCachedInventory(holder: Player, inventory: GuiInventory)
+    fun removeCachedView(holder: Player, view: GuiView)
 
-    fun getInventory(holder: Player, name: String): GuiInventory?
+    fun getView(holder: Player, name: String): GuiView?
 
 }
 

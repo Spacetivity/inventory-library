@@ -2,7 +2,7 @@ package eu.grindclub.inventorylib.bukkit
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import eu.grindclub.inventorylib.api.GuiInventoryProvider
+import eu.grindclub.inventorylib.api.GuiProvider
 import eu.grindclub.inventorylib.bukkit.api.GuiApiImpl
 import eu.grindclub.inventorylib.bukkit.file.MessageFile
 import eu.grindclub.inventorylib.bukkit.file.SoundConfigFile
@@ -25,7 +25,7 @@ class GuiInventoryBukkit : JavaPlugin() {
         this.messageFile = createOrLoadMessageFile()
 
         val inventoryApi = GuiApiImpl()
-        GuiInventoryProvider.register(inventoryApi)
+        GuiProvider.register(inventoryApi)
 
         GuiPlayerListener(this)
 

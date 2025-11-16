@@ -1,35 +1,35 @@
 package eu.grindclub.inventorylib.api.extension
 
 import net.kyori.adventure.text.Component
-import eu.grindclub.inventorylib.api.GuiInventoryProvider
-import eu.grindclub.inventorylib.api.inventory.GuiProvider
-import eu.grindclub.inventorylib.api.inventory.GuiInventory
+import eu.grindclub.inventorylib.api.GuiProvider
+import eu.grindclub.inventorylib.api.inventory.Gui as InventoryGuiProvider
+import eu.grindclub.inventorylib.api.inventory.GuiView
 import org.bukkit.entity.Player
 
-fun openStaticInventory(holder: Player, title: Component, provider: GuiProvider) {
-    GuiInventoryProvider.api.inventoryHandler.openStaticInventory(holder, title, provider, true)
+fun openStaticInventory(holder: Player, title: Component, provider: InventoryGuiProvider) {
+    GuiProvider.api.inventoryHandler.openStaticView(holder, title, provider, true)
 }
 
 fun openInventory(holder: Player, key: String) {
-    GuiInventoryProvider.api.inventoryHandler.getInventory(holder, key)?.open(holder)
+    GuiProvider.api.inventoryHandler.getView(holder, key)?.open(holder)
 }
 
-fun getInventory(holder: Player, key: String): GuiInventory? {
-    return GuiInventoryProvider.api.inventoryHandler.getInventory(holder, key)
+fun getInventory(holder: Player, key: String): GuiView? {
+    return GuiProvider.api.inventoryHandler.getView(holder, key)
 }
 
-fun cacheInventory(holder: Player, title: Component, provider: GuiProvider) {
-    GuiInventoryProvider.api.inventoryHandler.cacheInventory(holder, title, provider)
+fun cacheInventory(holder: Player, title: Component, provider: InventoryGuiProvider) {
+    GuiProvider.api.inventoryHandler.cacheView(holder, title, provider)
 }
 
-fun removeCachedInventory(holder: Player, inventory: GuiInventory) {
-    GuiInventoryProvider.api.inventoryHandler.removeCachedInventory(holder, inventory)
+fun removeCachedInventory(holder: Player, inventory: GuiView) {
+    GuiProvider.api.inventoryHandler.removeCachedView(holder, inventory)
 }
 
 fun clearCachedInventories(holder: Player) {
-    GuiInventoryProvider.api.inventoryHandler.clearCachedInventories(holder)
+    GuiProvider.api.inventoryHandler.clearCachedViews(holder)
 }
 
 fun updateCachedInventory(holder: Player, key: String) {
-    GuiInventoryProvider.api.inventoryHandler.updateCachedInventory(holder, key)
+    GuiProvider.api.inventoryHandler.updateCachedView(holder, key)
 }
