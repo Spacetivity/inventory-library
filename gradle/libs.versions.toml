@@ -2,7 +2,7 @@
 java = "21"
 
 kotlinx-serialization-json = "1.9.0"
-paper-api = "1.21.8-R0.1-SNAPSHOT"
+paper-api = "1.21.10-R0.1-SNAPSHOT"
 
 [libraries]
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }

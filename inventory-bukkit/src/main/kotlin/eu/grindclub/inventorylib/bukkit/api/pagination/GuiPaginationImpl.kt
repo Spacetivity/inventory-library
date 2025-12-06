@@ -52,18 +52,24 @@ class GuiPaginationImpl(private val controller: GuiController) : GuiPagination {
     }
 
     override fun toLastPage() {
-        val pageIds = items.keySet().stream().toList()
-        this.currentPageId = pageIds[pageIds.size - 1]
+        if (items.isEmpty) {
+            this.currentPageId = 0
+        } else {
+            val pageIds = items.keySet().stream().toList()
+            this.currentPageId = pageIds[pageIds.size - 1]
+        }
         refreshPage()
     }
 
     override fun toNextPage() {
+        if (items.isEmpty) return
         if (isLastPage()) return
         this.currentPageId += 1
         refreshPage()
     }
 
     override fun toPreviousPage() {
+        if (items.isEmpty) return
         if (isFirstPage()) return
         this.currentPageId -= 1
         refreshPage()

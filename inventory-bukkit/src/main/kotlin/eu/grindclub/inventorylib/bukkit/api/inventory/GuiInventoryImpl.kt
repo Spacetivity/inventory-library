@@ -8,9 +8,10 @@ import eu.grindclub.inventorylib.api.pagination.GuiPagination
 import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
 import eu.grindclub.inventorylib.bukkit.utils.SoundUtils
 import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.persistence.PersistentDataType
 
 class GuiInventoryImpl(
     override val provider: Gui,
@@ -24,6 +25,12 @@ class GuiInventoryImpl(
     override val rows: Int = this.controller.getRows()
     override val columns: Int = this.controller.getColumns()
     override val isCloseable: Boolean = this.controller.isCloseable
+
+    companion object {
+        private val OPEN_INVENTORY_KEY: NamespacedKey by lazy {
+            NamespacedKey(GuiInventoryBukkit.instance, "open-inventory")
+        }
+    }
 
     override fun open(holder: Player) {
         validateOpening(holder)
@@ -62,7 +69,8 @@ class GuiInventoryImpl(
 
         val rawInventory: Inventory = controller.rawInventory!!
         holder.openInventory(rawInventory)
-        holder.setMetadata("open-inventory", FixedMetadataValue(GuiInventoryBukkit.instance, this.name))
+        holder.persistentDataContainer.set(OPEN_INVENTORY_KEY, PersistentDataType.STRING, this.name)
+        
         if (this.controller.properties.playSoundOnOpen) SoundUtils.playOpenSound(holder)
 
         return false

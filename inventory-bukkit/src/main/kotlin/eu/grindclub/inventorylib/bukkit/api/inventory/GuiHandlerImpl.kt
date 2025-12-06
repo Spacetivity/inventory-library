@@ -10,11 +10,19 @@ import eu.grindclub.inventorylib.api.inventory.GuiView
 import eu.grindclub.inventorylib.api.utils.MathUtils
 import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
 import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
+import org.bukkit.persistence.PersistentDataType
 
 class GuiHandlerImpl : GuiHandler {
 
     override val inventories: Multimap<Player, GuiView> = ArrayListMultimap.create()
+
+    companion object {
+        private val OPEN_INVENTORY_KEY: NamespacedKey by lazy {
+            NamespacedKey(GuiInventoryBukkit.instance, "open-inventory")
+        }
+    }
 
     override fun openStaticView(holder: Player, title: Component, provider: Gui, forceSyncOpening: Boolean) {
         val inventory: GuiView = cacheView(holder, title, provider, true) ?: return
@@ -62,22 +70,22 @@ class GuiHandlerImpl : GuiHandler {
         val elytraView = getView(holder, viewId) ?: return
         val key: String = elytraView.name
 
-        if (!holder.hasMetadata("open-inventory")) return
-        if (!key.equals(holder.getMetadata("open-inventory")[0].value() as String, true)) return
+        val openInventoryName = holder.persistentDataContainer.get(OPEN_INVENTORY_KEY, PersistentDataType.STRING) ?: return
+        if (!key.equals(openInventoryName, true)) return
 
         elytraView.open(holder, true)
     }
 
     override fun clearCachedViews(holder: Player) {
         inventories.removeAll(holder)
-        if (holder.hasMetadata("open-inventory"))
-            holder.removeMetadata("open-inventory", GuiInventoryBukkit.instance)
+        if (holder.persistentDataContainer.has(OPEN_INVENTORY_KEY, PersistentDataType.STRING))
+            holder.persistentDataContainer.remove(OPEN_INVENTORY_KEY)
     }
 
     override fun removeCachedView(holder: Player, inventory: GuiView) {
         inventories.remove(holder, inventory)
-        if (holder.hasMetadata("open-inventory")) {
-            holder.removeMetadata("open-inventory", GuiInventoryBukkit.instance)
+        if (holder.persistentDataContainer.has(OPEN_INVENTORY_KEY, PersistentDataType.STRING)) {
+            holder.persistentDataContainer.remove(OPEN_INVENTORY_KEY)
         }
     }
 

@@ -10,16 +10,24 @@ import eu.grindclub.inventorylib.api.utils.MathUtils
 import eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
 import eu.grindclub.inventorylib.bukkit.utils.SoundUtils
 import org.bukkit.Bukkit
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.persistence.PersistentDataType
 
 class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
 
     private val inventoryHandler: GuiHandler
+
+    companion object {
+        private val OPEN_INVENTORY_KEY: NamespacedKey by lazy {
+            NamespacedKey(GuiInventoryBukkit.instance, "open-inventory")
+        }
+    }
 
     init {
         plugin.server.pluginManager.registerEvents(this, this.plugin)
@@ -30,7 +38,7 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
     fun onPlayerInventoryClick(event: InventoryClickEvent) {
         val player: Player = event.whoClicked as Player
 
-        if (!player.hasMetadata("open-inventory")) return
+        if (!player.persistentDataContainer.has(OPEN_INVENTORY_KEY, PersistentDataType.STRING)) return
         if (event.clickedInventory !== player.openInventory.topInventory) return
         if (!validateInventory(player, event.view.title())) return
 
@@ -51,7 +59,7 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
         if (event.inventory.holder !is Player) return
         val player: Player = event.player as Player
 
-        if (!player.hasMetadata("open-inventory")) return
+        if (!player.persistentDataContainer.has(OPEN_INVENTORY_KEY, PersistentDataType.STRING)) return
         if (!validateInventory(player, event.view.title())) return
 
         val inventory = inventoryHandler.getView(player, getOpenInventoryName(player)) ?: return
@@ -59,7 +67,7 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
         if (!inventory.isCloseable) {
             Bukkit.getScheduler().runTask(this.plugin, Runnable { inventory.open(player) })
         } else {
-            player.removeMetadata("open-inventory", this.plugin)
+            player.persistentDataContainer.remove(OPEN_INVENTORY_KEY)
             if (inventory.controller.properties.playSoundOnClose) SoundUtils.playCloseSound(player)
             if (inventory.isStaticInventory) inventoryHandler.removeCachedView(player, inventory)
         }
@@ -81,7 +89,7 @@ class GuiPlayerListener(private val plugin: GuiInventoryBukkit) : Listener {
     }
 
     private fun getOpenInventoryName(player: Player): String {
-        return player.getMetadata("open-inventory")[0].value() as String
+        return player.persistentDataContainer.get(OPEN_INVENTORY_KEY, PersistentDataType.STRING) ?: ""
     }
 }
 
