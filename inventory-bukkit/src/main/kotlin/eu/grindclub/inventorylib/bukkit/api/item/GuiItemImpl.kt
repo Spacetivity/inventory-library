@@ -63,9 +63,16 @@ class GuiItemImpl(
                 modifiableItem = modifiableItem.withType(newValue)
                 this.item = modifiableItem
 
+                if (inventoryPosition != null) {
+                    val slot: Int = MathUtils.positionToSlot(inventoryPosition, controller.getColumns())
+                    controller.rawInventory!!.setItem(slot, modifiableItem)
+                }
+
                 extraItem = extraItem?.withType(newValue)
-                if (extraItem != null) controller.pagination?.items?.values()?.find { it is GuiItemImpl && it.itemId == this.itemId }?.item =
-                    extraItem
+                if (extraItem != null) {
+                    val paginationItem = controller.pagination?.items?.values()?.find { it is GuiItemImpl && it.itemId == this.itemId } as? GuiItemImpl
+                    paginationItem?.item = extraItem
+                }
             }
 
             GuiItem.Modification.DISPLAY_NAME -> {
