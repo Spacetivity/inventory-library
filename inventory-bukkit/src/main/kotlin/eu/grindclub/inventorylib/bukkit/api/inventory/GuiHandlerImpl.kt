@@ -70,7 +70,8 @@ class GuiHandlerImpl : GuiHandler {
         val elytraView = getView(holder, viewId) ?: return
         val key: String = elytraView.name
 
-        val openInventoryName = holder.persistentDataContainer.get(OPEN_INVENTORY_KEY, PersistentDataType.STRING) ?: return
+        val openInventoryName =
+            holder.persistentDataContainer.get(OPEN_INVENTORY_KEY, PersistentDataType.STRING) ?: return
         if (!key.equals(openInventoryName, true)) return
 
         elytraView.open(holder, true)
@@ -82,8 +83,8 @@ class GuiHandlerImpl : GuiHandler {
             holder.persistentDataContainer.remove(OPEN_INVENTORY_KEY)
     }
 
-    override fun removeCachedView(holder: Player, inventory: GuiView) {
-        inventories.remove(holder, inventory)
+    override fun removeCachedView(holder: Player, view: GuiView) {
+        inventories.remove(holder, view)
         if (holder.persistentDataContainer.has(OPEN_INVENTORY_KEY, PersistentDataType.STRING)) {
             holder.persistentDataContainer.remove(OPEN_INVENTORY_KEY)
         }
