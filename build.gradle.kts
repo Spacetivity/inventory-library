@@ -5,7 +5,7 @@ plugins {
 }
 
 allprojects {
-    group = "eu.grindclub.inventorylib"
+    group = "net.spacetivity.inventorylib"
     version = "1.0-SNAPSHOT"
 
     repositories {

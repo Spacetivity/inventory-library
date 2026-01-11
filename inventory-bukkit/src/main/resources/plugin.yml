@@ -1,6 +1,6 @@
 name: inventory-library
 version: '1.0-SNAPSHOT'
-main: eu.grindclub.inventorylib.bukkit.GuiInventoryBukkit
+main: net.spacetivity.inventorylib.bukkit.GuiInventoryBukkit
 api-version: "1.21.11"
 authors:
   - TGamings

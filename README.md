@@ -39,7 +39,7 @@ Die Bibliothek wird als Gradle-Dependency bereitgestellt. Füge sie zu deinem `b
 
 ```kotlin
 dependencies {
-    implementation("eu.grindclub.inventorylib:inventory-api:1.0-SNAPSHOT")
+    implementation("net.spacetivity.inventorylib:inventory-api:1.0-SNAPSHOT")
 }
 ```
 
@@ -48,11 +48,11 @@ dependencies {
 ### Einfaches Inventar erstellen
 
 ```kotlin
-import eu.grindclub.inventorylib.api.extension.openStaticInventory
-import eu.grindclub.inventorylib.api.inventory.GuiProvider
-import eu.grindclub.inventorylib.api.inventory.GuiProperties
-import eu.grindclub.inventorylib.api.inventory.GuiController
-import eu.grindclub.inventorylib.api.item.GuiItem
+import net.spacetivity.inventorylib.api.extension.openStaticInventory
+import net.spacetivity.inventorylib.api.inventory.GuiProvider
+import net.spacetivity.inventorylib.api.inventory.GuiProperties
+import net.spacetivity.inventorylib.api.inventory.GuiController
+import net.spacetivity.inventorylib.api.item.GuiItem
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -735,4 +735,4 @@ val provider = ModificationInventoryProvider()
 
 ## Lizenz
 
-Diese Bibliothek ist Teil des GrindClub-Projekts.
+Diese Bibliothek ist Teil des Spacetivity-Projekts.
