@@ -1,6 +1,19 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     kotlin("jvm")
     `maven-publish`
+}
+
+// Lade local.properties falls vorhanden
+val localPropertiesFile = rootProject.file("local.properties")
+val localProperties = Properties()
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
+    localProperties.forEach { key, value ->
+        project.extensions.extraProperties.set(key.toString(), value)
+    }
 }
 
 dependencies {
@@ -20,22 +33,16 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            val repository = project.findProperty("github.repository") as String? 
-                ?: System.getenv("GITHUB_REPOSITORY") 
-                ?: "OWNER/REPO"
-            url = uri("https://maven.pkg.github.com/$repository")
+            url = uri("https://maven.pkg.github.com/Spacetivity/inventory-library")
             credentials {
-                username = project.findProperty("github.user") as String? 
-                    ?: System.getenv("GITHUB_ACTOR") 
-                    ?: System.getenv("USERNAME")
-                password = project.findProperty("github.token") as String? 
-                    ?: System.getenv("GITHUB_TOKEN") 
-                    ?: System.getenv("TOKEN")
+                username = localProperties.getProperty("gpr.user") ?: System.getenv("GPR_USER") ?: ""
+                password = localProperties.getProperty("gpr.key") ?: System.getenv("GPR_KEY") ?: ""
             }
         }
     }
+    
     publications {
-        register<MavenPublication>("maven") {
+        register<MavenPublication>("gpr") {
             from(components["java"])
         }
     }

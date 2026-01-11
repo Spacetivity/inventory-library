@@ -24,24 +24,35 @@ Eine umfassende Kotlin-Bibliothek für die Erstellung von GUI-Inventaren in Bukk
 
 Die Inventory Library API bietet eine moderne, typsichere und flexible Lösung zur Erstellung von GUI-Inventaren in Minecraft-Plugins. Die Bibliothek unterstützt:
 
-- ✅ Statische und dynamische Inventare
-- ✅ Inventar-Caching für bessere Performance
-- ✅ Pagination (Seitennavigation)
-- ✅ Item-Aktionen mit Cooldown-Schutz
-- ✅ Flexible Positionierung von Items
-- ✅ Item-Modifikationen zur Laufzeit
-- ✅ Bestätigungsdialoge
-- ✅ Navigation zwischen Inventaren
+- Statische und dynamische Inventare
+- Inventar-Caching für bessere Performance
+- Pagination (Seitennavigation)
+- Item-Aktionen mit Cooldown-Schutz
+- Flexible Positionierung von Items
+- Item-Modifikationen zur Laufzeit
+- Bestätigungsdialoge
+- Navigation zwischen Inventaren
 
 ## Installation
 
-Die Bibliothek wird als Gradle-Dependency bereitgestellt. Füge sie zu deinem `build.gradle.kts` hinzu:
+Die Bibliothek wird als Gradle-Dependency über GitHub Packages bereitgestellt. Füge das Repository und die Dependency zu deinem `build.gradle.kts` hinzu:
 
 ```kotlin
+repositories {
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/Spacetivity/SpaceInventories")
+        // Keine Authentifizierung nötig für öffentliche Packages
+    }
+    mavenCentral()
+}
+
 dependencies {
     implementation("net.spacetivity.inventorylib:inventory-api:1.0-SNAPSHOT")
 }
 ```
+
+**Hinweis:** Da dieses Package öffentlich ist, ist keine Authentifizierung beim Lesen erforderlich.
 
 ## Schnellstart
 
