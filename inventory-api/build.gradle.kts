@@ -19,11 +19,18 @@ task("sourcesJar", type = Jar::class) {
 publishing {
     repositories {
         maven {
-            name = "GitLabPackages"
-            url = uri("https://gitlab.com/api/v4/projects/${project.findProperty("gitlab.projectId") ?: System.getenv("CI_PROJECT_ID") ?: "YOUR_PROJECT_ID"}/packages/maven")
+            name = "GitHubPackages"
+            val repository = project.findProperty("github.repository") as String? 
+                ?: System.getenv("GITHUB_REPOSITORY") 
+                ?: "OWNER/REPO"
+            url = uri("https://maven.pkg.github.com/$repository")
             credentials {
-                username = project.findProperty("gitlab.user") as String? ?: System.getenv("CI_JOB_USER") ?: "__token__"
-                password = project.findProperty("gitlab.token") as String? ?: System.getenv("CI_JOB_TOKEN") ?: System.getenv("GITLAB_TOKEN")
+                username = project.findProperty("github.user") as String? 
+                    ?: System.getenv("GITHUB_ACTOR") 
+                    ?: System.getenv("USERNAME")
+                password = project.findProperty("github.token") as String? 
+                    ?: System.getenv("GITHUB_TOKEN") 
+                    ?: System.getenv("TOKEN")
             }
         }
     }
